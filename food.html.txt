@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สั่งอาหาร - Meeting Reunion Coach #1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #4A90E2;
+            --light-blue: #E1F0FF;
+            --primary-green: #8CC63F;
+            --soft-pink: #FF8DA1;
+            --text-dark: #333333;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: linear-gradient(135deg, var(--light-blue) 0%, #ffffff 100%);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            background-color: var(--white);
+            width: 100%;
+            max-width: 600px; /* ขยายให้กว้างขึ้นเพื่อใส่รูปอาหาร */
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.15);
+            overflow: hidden;
+            border: 2px solid var(--light-blue);
+        }
+
+        .form-header {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--soft-pink);
+        }
+
+        .form-header h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 600;
+        }
+
+        .form-header p {
+            margin: 10px 0 0 0;
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .form-body {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label.section-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--primary-blue);
+            border-bottom: 2px dashed var(--light-blue);
+            padding-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: 'Kanit', sans-serif;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus, input[type="tel"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        /* เมนูอาหารแบบตาราง (Grid) */
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .food-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #fafafa;
+        }
+
+        .food-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .food-card h3 {
+            margin: 5px 0;
+            font-size: 16px;
+            color: var(--text-dark);
+        }
+
+        .food-card p {
+            margin: 0;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .food-card input[type="radio"] {
+            display: none; /* ซ่อนปุ่มกลมๆ ไว้ เพราะเราจะใช้การ์ดแทนปุ่ม */
+        }
+
+        /* เมื่อการ์ดถูกเลือก */
+        .food-card.selected {
+            border-color: var(--primary-green);
+            background-color: #f0fdf4;
+            box-shadow: 0 4px 12px rgba(140, 198, 63, 0.2);
+        }
+
+        /* เมนูเครื่องดื่ม */
+        .drink-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .drink-option {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+
+        .drink-option:hover {
+            background-color: var(--light-blue);
+        }
+
+        .drink-option input[type="radio"] {
+            accent-color: var(--primary-blue);
+            width: 18px;
+            height: 18px;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            font-family: 'Kanit', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-green);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <header class="form-header">
+            <h1>🍴 เลือกเมนูอาหาร & เครื่องดื่ม</h1>
+            <p>กองทัพต้องเดินด้วยท้อง... เลือกเมนูโปรดของคุณได้เลย!</p>
+        </header>
+
+        <form class="form-body" id="foodForm">
+            
+            <div class="form-group">
+                <label class="section-label">ข้อมูลส่วนตัว</label>
+                <input type="text" name="fullname" placeholder="ชื่อ - นามสกุล" style="margin-bottom: 10px;" required>
+                <input type="tel" name="phone" placeholder="เบอร์โทรศัพท์ (08X-XXX-XXXX)" required>
+            </div>
+
+            <div class="form-group">
+                <label class="section-label">เลือกเซ็ตอาหาร (1 ท่าน / 1 เซ็ต)</label>
+                <div class="food-grid">
+                    
+                    <label class="food-card" onclick="selectFood(this)">
+                        <input type="radio" name="foodSet" value="Set 1: ไก่ทอดกระเทียม + ต้มยำทะเลน้ำข้น" required>
+                        <img src="https://placehold.co/400x300/E1F0FF/4A90E2?text=Set+1" alt="Set 1">
+                        <h3>Set 1</h3>
+                        <p>ไก่ทอดกระเทียม<br>ต้มยำทะเลน้ำข้น</p>
+                    </label>
+
+                    <label class="food-card" onclick="selectFood(this)">
+                        <input type="radio" name="foodSet" value="Set 2: กระเพราเนื้อริบอาย + กะหล่ำปลีน้ำปลาหมูกรอบ">
+                        <img src="https://placehold.co/400x300/FFEBEE/E57373?text=Set+2" alt="Set 2">
+                        <h3>Set 2</h3>
+                        <p>กะเพราเนื้อริบอาย<br>กะหล่ำปลีน้ำปลาหมูกรอบ</p>
+                    </label>
+
+                    <label class="food-card" onclick="selectFood(this)">
+                        <input type="radio" name="foodSet" value="Set 3: กระเพราทะเล + ผัดผักรวม">
+                        <img src="https://placehold.co/400x300/E8F5E9/81C784?text=Set+3" alt="Set 3">
+                        <h3>Set 3</h3>
+                        <p>กะเพราทะเล<br>ผัดผักรวม</p>
+                    </label>
+
+                    <label class="food-card" onclick="selectFood(this)">
+                        <input type="radio" name="foodSet" value="Set 4: คะน้าหมูกรอบ + ลาบปลากระพงทอดกรอบ">
+                        <img src="https://placehold.co/400x300/FFF3E0/FFB74D?text=Set+4" alt="Set 4">
+                        <h3>Set 4</h3>
+                        <p>คะน้าหมูกรอบ<br>ลาบปลากระพงทอดกรอบ</p>
+                    </label>
+
+                    <label class="food-card" onclick="selectFood(this)">
+                        <input type="radio" name="foodSet" value="Set 5: ข้าวผัดทะเล + แกงเขียวหวานหมู">
+                        <img src="https://placehold.co/400x300/F3E5F5/BA68C8?text=Set+5" alt="Set 5">
+                        <h3>Set 5</h3>
+                        <p>ข้าวผัดทะเล<br>แกงเขียวหวานหมู</p>
+                    </label>
+
+                    <label class="food-card" onclick="selectFood(this)">
+                        <input type="radio" name="foodSet" value="Set 6: ทะเลคั่วพริกเกลือ + ต้มยำไก่น้ำข้น">
+                        <img src="https://placehold.co/400x300/E0F7FA/4DD0E1?text=Set+6" alt="Set 6">
+                        <h3>Set 6</h3>
+                        <p>ทะเลคั่วพริกเกลือ<br>ต้มยำไก่น้ำข้น</p>
+                    </label>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="section-label">เลือกเครื่องดื่ม</label>
+                <div class="drink-group">
+                    <label class="drink-option"><input type="radio" name="drink" value="ชามะนาว" required> 🍋 ชามะนาว</label>
+                    <label class="drink-option"><input type="radio" name="drink" value="ชาไทย"> 🧋 ชาไทย</label>
+                    <label class="drink-option"><input type="radio" name="drink" value="อเมริกาโน่"> ☕ อเมริกาโน่</label>
+                    <label class="drink-option"><input type="radio" name="drink" value="ลาเต้"> 🥛 ลาเต้</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="section-label">หมายเหตุอื่นๆ</label>
+                <textarea name="note" rows="3" placeholder="เช่น ขอรสจัดๆ เผ็ดๆ หรือแพ้อาหารทะเล พิมพ์บอกได้เลยครับ"></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">บันทึกออเดอร์ 🍽️</button>
+            
+        </form>
+    </div>
+
+    <script>
+        // ฟังก์ชันไฮไลท์สีการ์ดอาหารที่ถูกเลือก
+        function selectFood(selectedCard) {
+            // ล้างคลาส selected ออกจากการ์ดทุกใบก่อน
+            document.querySelectorAll('.food-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            // เพิ่มคลาส selected ให้ใบที่ถูกคลิก
+            selectedCard.classList.add('selected');
+        }
+
+        // ระบบส่งข้อมูลเข้า Google Sheets
+        document.getElementById('foodForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerText;
+            btn.innerText = 'กำลังบันทึกออเดอร์...';
+            btn.disabled = true;
+
+            const formData = new URLSearchParams(new FormData(this));
+
+            // ⚠️ นำ URL จาก Apps Script แผ่นใหม่ มาใส่ตรงนี้
+            const WEB_APP_URL = 'ใส่_URL_ที่ได้จาก_Google_Apps_Script_ไฟล์ใหม่_ตรงนี้';
+
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            })
+            .then(() => {
+                alert('บันทึกเมนูอาหารเรียบร้อยแล้ว เตรียมตัวอร่อยได้เลย! 🎉');
+                this.reset();
+                document.querySelectorAll('.food-card').forEach(c => c.classList.remove('selected'));
+            })
+            .catch(error => {
+                alert('เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+            })
+            .finally(() => {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            });
+        });
+    </script>
+
+</body>
+</html>
