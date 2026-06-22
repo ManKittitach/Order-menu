@@ -305,7 +305,7 @@
             const formData = new URLSearchParams(new FormData(this));
 
             // ⚠️ นำ URL จาก Apps Script แผ่นใหม่ มาใส่ตรงนี้
-            const WEB_APP_URL = 'ใส่_URL_ที่ได้จาก_Google_Apps_Script_ไฟล์ใหม่_ตรงนี้';
+            const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyD4DxSqQjB1KYQD8-A3rsPPArmvKaS8t4VCdiANxwbsIV4t-I5_TW38Lv2KZAhC9VJ/exec';
 
             fetch(WEB_APP_URL, {
                 method: 'POST',
